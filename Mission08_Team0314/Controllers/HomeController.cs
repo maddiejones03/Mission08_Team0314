@@ -6,19 +6,77 @@ namespace Mission08_Team0314.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IQuadrantsRepository _repo;
+
+    public HomeController(IQuadrantsRepository repo)
+    {
+        _repo = repo;
+    }
+    
+    // Landing page
     public IActionResult Index()
     {
         return View();
     }
 
+    [HttpGet]
     public IActionResult Quadrants()
     {
-        return View();
+        var tasks = _repo.Tasks
+            .Where(t => !t.Completed)
+            .OrderBy(t => t.Quadrant)
+            .ThenBy(t => t.DueDate)
+            .ToList();
+        
+        return View(tasks);
     }
 
     [HttpGet]
-    public IActionResult AddEdit(int id = 0)
+    public IActionResult Add()
     {
-        return View();
+        return View("AddEdit", new Task());
+    }
+
+    [HttpPost]
+    public IActionResult Add(Task task)
+    {
+        _repo.Add(task);
+        _repo.SaveChanges(task);
+        
+        return RedirectToAction("Quadrants");
+    }
+    
+    
+    [HttpGet]
+    public IActionResult Edit(int TaskId)
+    {
+        var TaskInfo = _repo.Tasks.SingleOrDefault(t => t.TaskId == TaskId);
+        if (TaskInfo == null) return NotFound();
+        
+        return View("AddEdit",TaskInfo);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Task task)
+    {
+        _repo.Update(task);
+        _repo.SaveChanges(task);
+        return RedirectToAction("Quadrants");
+    }
+
+    [HttpGet]
+    public IActionResult Delete(int TaskId)
+    {
+        var task = _repo.Tasks.SingleOrDefault(t => t.TaskId == TaskId);
+        if (task == null) return NotFound();
+        return View(task);
+    }
+    
+    [HttpPost]
+    public IActionResult Delete(Task task)
+    {
+        _repo.Remove(task);
+        _repo.SaveChanges(task);
+        return RedirectToAction("Quadrants");
     }
 }
