@@ -34,11 +34,11 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Add()
     {
-        return View("AddEdit", new Task());
+        return View("AddEdit", new TodoTask());
     }
 
     [HttpPost]
-    public IActionResult Add(Task task)
+    public IActionResult Add(TodoTask task)
     {
         _repo.Add(task);
         _repo.SaveChanges(task);
@@ -57,7 +57,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit(Task task)
+    public IActionResult Edit(TodoTask task)
     {
         _repo.Update(task);
         _repo.SaveChanges(task);
@@ -73,7 +73,7 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public IActionResult Delete(Task task)
+    public IActionResult Delete(TodoTask task)
     {
         _repo.Remove(task);
         _repo.SaveChanges(task);
