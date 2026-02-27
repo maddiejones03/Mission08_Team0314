@@ -34,7 +34,10 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Add()
     {
-        return View("AddEdit", new Task());
+        ViewBag.Categories = _repo.Categories
+            .OrderBy(x => x.CategoryName)
+            .ToList();
+        return View("AddEdit");
     }
 
     [HttpPost]
@@ -52,6 +55,9 @@ public class HomeController : Controller
     {
         var TaskInfo = _repo.Tasks.SingleOrDefault(t => t.TaskId == TaskId);
         if (TaskInfo == null) return NotFound();
+        ViewBag.Categories = _repo.Categories
+            .OrderBy(x => x.CategoryName)
+            .ToList();
         
         return View("AddEdit",TaskInfo);
     }
