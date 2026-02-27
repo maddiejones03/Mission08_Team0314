@@ -35,38 +35,39 @@ public class HomeController : Controller
     public IActionResult Add()
     {
         ViewBag.Categories = _repo.Categories
-            .OrderBy(x => x.CategoryName)
+            .OrderBy(c => c.Name)
             .ToList();
-        return View("AddEdit");
+        return View("AddEdit", new TodoTask());
     }
 
     [HttpPost]
-    public IActionResult Add(Task task)
+    public IActionResult Add(TodoTask task)
     {
         _repo.Add(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         
-        return RedirectToAction("Quadrants");
+        return View("Confirmation", task);
     }
     
     
     [HttpGet]
     public IActionResult Edit(int TaskId)
     {
+        ViewBag.Categories = _repo.Categories
+            .OrderBy(c => c.Name)
+            .ToList();
+        
         var TaskInfo = _repo.Tasks.SingleOrDefault(t => t.TaskId == TaskId);
         if (TaskInfo == null) return NotFound();
-        ViewBag.Categories = _repo.Categories
-            .OrderBy(x => x.CategoryName)
-            .ToList();
         
         return View("AddEdit",TaskInfo);
     }
 
     [HttpPost]
-    public IActionResult Edit(Task task)
+    public IActionResult Edit(TodoTask task)
     {
         _repo.Update(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         return RedirectToAction("Quadrants");
     }
 
@@ -79,10 +80,10 @@ public class HomeController : Controller
     }
     
     [HttpPost]
-    public IActionResult Delete(Task task)
+    public IActionResult Delete(TodoTask task)
     {
         _repo.Remove(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         return RedirectToAction("Quadrants");
     }
 }
