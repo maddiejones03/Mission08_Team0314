@@ -1,5 +1,6 @@
 @using Mission08_Team0314.Models
-@model IEnumerable<Mission08_Team0314.Models.Task>
+@* Updated to the real model name: TodoTask *@
+@model IEnumerable<Mission08_Team0314.Models.TodoTask>
 
 @{
     ViewData["Title"] = "Task Quadrants";
@@ -8,7 +9,7 @@
 <div class="container mt-4">
     <div class="text-center mb-4">
         <h1 class="display-4 font-weight-bold">Task Matrix</h1>
-        <p class="text-muted italic">"First Things First"</p>
+        <p class="text-muted font-italic">"First Things First"</p>
     </div>
 
     @* The 2x2 Grid using Bootstrap *@
@@ -30,27 +31,28 @@
                             <table class="table table-hover mb-0">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Task</th>
+                                        <th class="pl-3">Task</th>
                                         <th>Due Date</th>
                                         <th>Category</th>
-                                        <th class="text-right px-3">Actions</th>
+                                        <th class="text-right pr-3">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @* Display only non-completed tasks for this specific quadrant *@
+                                    @* Filtering TodoTasks for the specific quadrant *@
                                     @foreach (var t in Model.Where(x => x.Quadrant == i && !x.Completed))
                                     {
                                         <tr>
                                             <td class="align-middle pl-3">@t.TaskName</td>
                                             <td class="align-middle">@t.DueDate?.ToShortDateString()</td>
-                                            <td class="align-middle">@(t.Category?.CategoryName ?? "General")</td>
+                                            @* Fixed: Changed CategoryName to Name to match the real Category.cs *@
+                                            <td class="align-middle">@(t.Category?.Name ?? "General")</td>
                                             <td class="text-right pr-3">
                                                 <div class="btn-group" role="group">
                                                     <form asp-action="MarkComplete" asp-route-id="@t.TaskId" method="post" class="d-inline">
                                                         <button type="submit" class="btn btn-sm btn-outline-success">Done</button>
                                                     </form>
-                                                    <a asp-action="AddEdit" asp-route-id="@t.TaskId" class="btn btn-sm btn-outline-info ml-1">Edit</a>
-                                                    <form asp-action="Delete" asp-route-id="@t.TaskId" method="post" class="d-inline ml-1" onsubmit="return confirm('Delete this task?');">
+                                                    <a asp-action="Edit" asp-route-TaskId="@t.TaskId" class="btn btn-sm btn-outline-info ml-1">Edit</a>
+                                                    <form asp-action="Delete" asp-route-TaskId="@t.TaskId" method="post" class="d-inline ml-1" onsubmit="return confirm('Delete this task?');">
                                                         <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                                     </form>
                                                 </div>
@@ -65,4 +67,4 @@
             </div>
         }
     </div>
-</div> 
+</div>
