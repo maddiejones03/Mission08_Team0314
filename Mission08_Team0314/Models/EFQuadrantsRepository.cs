@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 namespace Mission08_Team0314.Models;
 
 public class EFQuadrantsRepository : IQuadrantsRepository
