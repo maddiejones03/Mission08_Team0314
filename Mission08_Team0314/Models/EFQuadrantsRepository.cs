@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 namespace Mission08_Team0314.Models;
 
 public class EFQuadrantsRepository : IQuadrantsRepository
@@ -12,6 +12,7 @@ public class EFQuadrantsRepository : IQuadrantsRepository
     }
 
     public IQueryable<TodoTask> Tasks => _context.Tasks;
+    public IQueryable<Category> Categories => _context.Categories;
 
     public void Add(TodoTask todoTask)
     {
@@ -28,7 +29,7 @@ public class EFQuadrantsRepository : IQuadrantsRepository
         _context.Tasks.Remove(todoTask);
     }
 
-    public void SaveChanges(TodoTask todoTask)
+    public void SaveChanges()
     {
         _context.SaveChanges();
     }

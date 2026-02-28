@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Mission08_Team0314.Models;
 
@@ -16,7 +17,7 @@ public class HomeController : Controller
     // Landing page
     public IActionResult Index()
     {
-        return View("Quadrants");
+        return View();
     }
 
     [HttpGet]
@@ -34,6 +35,9 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Add()
     {
+        ViewBag.Categories = _repo.Categories
+            .OrderBy(c => c.Name)
+            .ToList();
         return View("AddEdit", new TodoTask());
     }
 
@@ -41,15 +45,19 @@ public class HomeController : Controller
     public IActionResult Add(TodoTask task)
     {
         _repo.Add(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         
-        return RedirectToAction("Quadrants");
+        return View("Confirmation", task);
     }
     
     
     [HttpGet]
     public IActionResult Edit(int TaskId)
     {
+        ViewBag.Categories = _repo.Categories
+            .OrderBy(c => c.Name)
+            .ToList();
+        
         var TaskInfo = _repo.Tasks.SingleOrDefault(t => t.TaskId == TaskId);
         if (TaskInfo == null) return NotFound();
         
@@ -60,7 +68,7 @@ public class HomeController : Controller
     public IActionResult Edit(TodoTask task)
     {
         _repo.Update(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         return RedirectToAction("Quadrants");
     }
 
@@ -76,7 +84,7 @@ public class HomeController : Controller
     public IActionResult Delete(TodoTask task)
     {
         _repo.Remove(task);
-        _repo.SaveChanges(task);
+        _repo.SaveChanges();
         return RedirectToAction("Quadrants");
     }
 }
