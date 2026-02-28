@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Mission08_Team0314.Models;
 
 public class TodoTask
 {
+    [Key]
     public int TaskId { get; set; }
 
     public string TaskName { get; set; } = string.Empty;

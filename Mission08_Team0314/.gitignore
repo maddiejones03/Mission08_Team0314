@@ -8,3 +8,8 @@ x86/
 bld/
 [Bb]in/
 [Oo]bj/
+.vs/
+.vscode/
+.DS_Store
+bin/
+obj/
