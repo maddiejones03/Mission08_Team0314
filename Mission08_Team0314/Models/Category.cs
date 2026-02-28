@@ -1,11 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+namespace Mission08_Team0314.Models;
 
-namespace Mission08_Team0314.Models
+public class Category
 {
-    public class Category
-    {
-        [Key]
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
-    }
+    public int CategoryId { get; set; }
+    public string Name { get; set; } = string.Empty;
+
+    // Navigation
+    public ICollection<TodoTask> Tasks { get; set; }
 }
