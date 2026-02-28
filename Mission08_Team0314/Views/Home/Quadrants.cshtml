@@ -43,7 +43,7 @@
                                         <tr>
                                             <td class="align-middle pl-3">@t.TaskName</td>
                                             <td class="align-middle">@t.DueDate?.ToShortDateString()</td>
-                                            <td class="align-middle">@(t.Category?.CategoryName ?? "General")</td>
+                                            <td class="align-middle">@(t.Category?.Name ?? "General")</td>
                                             <td class="text-right pr-3">
                                                 <div class="btn-group" role="group">
                                                     <form asp-action="MarkComplete" asp-route-id="@t.TaskId" method="post" class="d-inline">

@@ -17,7 +17,7 @@ public class HomeController : Controller
     // Landing page
     public IActionResult Index()
     {
-        return View();
+        return View("Quadrants");
     }
 
     [HttpGet]
